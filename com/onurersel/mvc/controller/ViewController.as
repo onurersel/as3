@@ -5,7 +5,8 @@
 package com.onurersel.mvc.controller
 {
 	import com.onurersel.mvc.model.ResizeModel;
-	import com.onurersel.mvc.view.View;
+	import com.onurersel.mvc.view.IView;
+	import com.onurersel.mvc.view.sprite.View;
 
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -155,7 +156,7 @@ package com.onurersel.mvc.controller
 
 
 		/**********      ADD VIEW      **********/
-		public function addView(view : View) : void
+		public function addView(view : IView) : void
 		{
 			for (var i : int = 0; i < _viewArray.length; i++)
 			{
@@ -170,7 +171,7 @@ package com.onurersel.mvc.controller
 			_viewArray.push(view);
 		}
 
-		public function removeView(view : View) : void
+		public function removeView(view : IView) : void
 		{
 			for (var i : int = 0; i < _viewArray.length; i++)
 			{

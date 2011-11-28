@@ -5,8 +5,8 @@
 package com.onurersel.form.button
 {
 	import com.onurersel.form.*;
-	import com.onurersel.mvc.view.ButtonView;
-	import com.onurersel.mvc.view.View;
+	import com.onurersel.mvc.view.sprite.ButtonView;
+	import com.onurersel.mvc.view.sprite.View;
 
 	import flash.events.Event;
 

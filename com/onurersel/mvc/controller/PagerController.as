@@ -4,7 +4,7 @@
  */
 package com.onurersel.mvc.controller
 {
-	import com.onurersel.mvc.view.ButtonView;
+	import com.onurersel.mvc.view.sprite.ButtonView;
 
 	import flash.display.Sprite;
 	import flash.events.Event;

@@ -5,8 +5,12 @@
 package com.onurersel.mvc.controller
 {
 	import com.onurersel.mvc.model.ResizeModel;
-	import com.onurersel.mvc.view.ButtonView;
-	import com.onurersel.mvc.view.View;
+	import com.onurersel.mvc.view.IButtonView;
+	import com.onurersel.mvc.view.IView;
+	import com.onurersel.mvc.view.sprite.ButtonView;
+	import com.onurersel.mvc.view.sprite.View;
+
+	import flash.display.DisplayObject;
 
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -16,7 +20,7 @@ package com.onurersel.mvc.controller
 	public class ScrollbarController extends ViewController
 	{
 		public var handleFrame					: Rectangle;
-		private var _handleView 				: ButtonView;
+		private var _handleView 				: Sprite;
 		private var _target						: ScrollAreaController;
 		public var barHeight					: int;
 
@@ -30,21 +34,21 @@ package com.onurersel.mvc.controller
 			super(view);
 		}
 
-		public function prepare(handleView : ButtonView) : void
+		public function prepare(handleView : IButtonView) : void
 		{
 
-			this._handleView = handleView;
-			this.minY = handleView.y;
-			handleFrame = new Rectangle(handleView.x,  handleView.y,  handleView.width, handleView.height);
+			this._handleView = handleView as Sprite;
+			this.minY = _handleView.y;
+			handleFrame = new Rectangle(_handleView.x,  _handleView.y,  _handleView.width, _handleView.height);
 
-			addView(handleView);
+			addView(handleView as IView);
 			updateViewPosition();
 
 		}
 
 		/**********      ADD VIEWS      **********/
 
-		override public function addView(view : View) : void
+		override public function addView(view : IView) : void
 		{
 			super.addView(view);
 
@@ -55,7 +59,7 @@ package com.onurersel.mvc.controller
 			}
 		}
 
-		override public function removeView(view : View) : void
+		override public function removeView(view : IView) : void
 		{
 			super.removeView(view);
 
@@ -101,8 +105,8 @@ package com.onurersel.mvc.controller
 			{
 				minY = _target.visibleArea.y;
 
-				handleView.y = _target.visibleArea.y;
-				handleView.x = _target.visibleArea.x + _target.visibleArea.width;
+				DisplayObject(handleView).y = _target.visibleArea.y;
+				DisplayObject(handleView).x = _target.visibleArea.x + _target.visibleArea.width;
 
 				barHeight = _target.visibleArea.height;
 			}
@@ -123,9 +127,9 @@ package com.onurersel.mvc.controller
 
 		/**********      GETTER      **********/
 
-		public function get handleView() : ButtonView
+		public function get handleView() : IButtonView
 		{
-			return _handleView;
+			return _handleView as IButtonView;
 		}
 
 		public function get target() : ScrollAreaController

@@ -4,9 +4,13 @@
  */
 package
 com.onurersel.mvc.controller{
-	import com.onurersel.mvc.view.ButtonView;
-	import com.onurersel.mvc.view.DropdownButtonView;
-	import com.onurersel.mvc.view.View;
+	import com.onurersel.mvc.view.IButtonView;
+	import com.onurersel.mvc.view.IView;
+	import com.onurersel.mvc.view.sprite.ButtonView;
+	import com.onurersel.mvc.view.sprite.DropdownButtonView;
+	import com.onurersel.mvc.view.sprite.View;
+
+	import flash.display.DisplayObject;
 
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -20,7 +24,7 @@ com.onurersel.mvc.controller{
 		protected var isOpen				: Boolean;
 		protected var dropdownContainer		: View;
 
-		private var listView				: View;
+		private var listView				: IView;
 
 		public var selectedID				: int;
 
@@ -33,7 +37,7 @@ com.onurersel.mvc.controller{
 
 		/**********      PREPARE      **********/
 
-		public function prepare(data : Array, headerButton : DropdownButtonView, listItemClass : Class, scrollHandle : ButtonView, height : int, scrollAreaClass : Class = null,  listView : View = null) : void
+		public function prepare(data : Array, headerButton : DropdownButtonView, listItemClass : Class, scrollHandle : IButtonView, height : int, scrollAreaClass : Class = null,  listView : IView = null) : void
 		{
 			this.headerButton = headerButton;
 
@@ -49,7 +53,7 @@ com.onurersel.mvc.controller{
 			dropdownContainer.x = headerButton.x;
 			dropdownContainer.y = headerButton.y + headerButton.height;
 
-			dropdownContainer.addChild(scrollHandle);
+			dropdownContainer.addChild(scrollHandle as DisplayObject);
 
 
 			if(scrollAreaClass == null)			scrollAreaClass = ScrollAreaController;

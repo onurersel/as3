@@ -4,7 +4,7 @@
  */
 package com.onurersel.form.item
 {
-	import com.onurersel.mvc.view.CheckboxView;
+	import com.onurersel.mvc.view.sprite.CheckboxView;
 
 	public class FormCheckboxController extends FormItemController
 	{

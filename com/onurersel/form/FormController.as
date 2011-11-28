@@ -10,8 +10,8 @@ package com.onurersel.form
 	import com.onurersel.form.item.FormTextFieldController;
 	import com.onurersel.form.item.FormViewCController;
 	import com.onurersel.mvc.controller.ViewController;
-	import com.onurersel.mvc.view.ButtonView;
-	import com.onurersel.mvc.view.View;
+	import com.onurersel.mvc.view.sprite.ButtonView;
+	import com.onurersel.mvc.view.sprite.View;
 
 	import flash.display.DisplayObject;
 	import flash.display.InteractiveObject;

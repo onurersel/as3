@@ -4,7 +4,7 @@
  */
 package com.onurersel.mvc.controller
 {
-	import com.onurersel.mvc.view.View;
+	import com.onurersel.mvc.view.sprite.View;
 
 	public class ListItemController extends ViewController
 	{

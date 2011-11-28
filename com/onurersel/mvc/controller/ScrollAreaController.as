@@ -4,7 +4,8 @@
  */
 package com.onurersel.mvc.controller
 {
-	import com.onurersel.mvc.view.ButtonView;
+	import com.onurersel.mvc.view.IButtonView;
+	import com.onurersel.mvc.view.sprite.ButtonView;
 
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
@@ -30,7 +31,7 @@ package com.onurersel.mvc.controller
 
 		/**********      PREPARE      **********/
 
-		public function prepare(listItemControllerClass : Class, listItemClass : Class,  scrollHandle : ButtonView, data : Array, visibleArea : Rectangle, listControllerClass : Class = null, delegate : * = null) : void
+		public function prepare(listItemControllerClass : Class, listItemClass : Class,  scrollHandle : IButtonView, data : Array, visibleArea : Rectangle, listControllerClass : Class = null, delegate : * = null) : void
 		{
 			this.visibleArea = visibleArea;
 			scrollController = new ScrollbarController(view);

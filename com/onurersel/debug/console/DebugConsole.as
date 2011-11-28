@@ -7,7 +7,7 @@ package com.onurersel.debug.console
 	import avmplus.getQualifiedClassName;
 
 	import com.onurersel.mvc.model.ButtonModel;
-	import com.onurersel.mvc.view.ButtonView;
+	import com.onurersel.mvc.view.sprite.ButtonView;
 
 	import flash.display.DisplayObject;
 	import flash.events.Event;

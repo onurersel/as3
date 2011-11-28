@@ -4,7 +4,7 @@
  */
 package com.onurersel.debug.console
 {
-	import com.onurersel.mvc.view.ButtonView;
+	import com.onurersel.mvc.view.sprite.ButtonView;
 
 	import flash.events.MouseEvent;
 	import flash.text.TextField;

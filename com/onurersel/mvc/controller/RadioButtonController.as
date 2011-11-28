@@ -4,9 +4,9 @@
  */
 package com.onurersel.mvc.controller
 {
-	import com.onurersel.mvc.view.ButtonView;
-	import com.onurersel.mvc.view.RadioButtonView;
-	import com.onurersel.mvc.view.View;
+	import com.onurersel.mvc.view.sprite.ButtonView;
+	import com.onurersel.mvc.view.sprite.RadioButtonView;
+	import com.onurersel.mvc.view.sprite.View;
 
 	import flash.display.Sprite;
 	import flash.events.Event;
