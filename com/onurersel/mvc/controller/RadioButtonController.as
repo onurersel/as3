@@ -4,9 +4,11 @@
  */
 package com.onurersel.mvc.controller
 {
-	import com.onurersel.mvc.view.sprite.ButtonView;
+	import com.onurersel.mvc.events.ButtonEvent;
+	import com.onurersel.mvc.view.IView;
 	import com.onurersel.mvc.view.sprite.RadioButtonView;
-	import com.onurersel.mvc.view.sprite.View;
+
+	import flash.display.DisplayObject;
 
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -25,24 +27,24 @@ package com.onurersel.mvc.controller
 
 		/**********      ADD VIEW      **********/
 
-		override public function addView(view : View) : void
+		override public function addView(view : IView) : void
 		{
 			super.addView(view);
 
 			if(view is RadioButtonView)
 			{
-				view.addEventListener(ButtonView.CLICK, clickHandler);
+				DisplayObject(view).addEventListener(ButtonEvent.CLICK, clickHandler);
 			}
 		}
 
 
-		override public function removeView(view : View) : void
+		override public function removeView(view : IView) : void
 		{
 			super.removeView(view);
 
 			if(view is RadioButtonView)
 			{
-				view.removeEventListener(ButtonView.CLICK, clickHandler);
+				DisplayObject(view).removeEventListener(ButtonEvent.CLICK, clickHandler);
 			}
 		}
 

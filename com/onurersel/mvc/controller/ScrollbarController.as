@@ -4,14 +4,13 @@
  */
 package com.onurersel.mvc.controller
 {
+	import com.onurersel.mvc.events.ButtonEvent;
 	import com.onurersel.mvc.model.ResizeModel;
 	import com.onurersel.mvc.view.IButtonView;
 	import com.onurersel.mvc.view.IView;
 	import com.onurersel.mvc.view.sprite.ButtonView;
-	import com.onurersel.mvc.view.sprite.View;
 
 	import flash.display.DisplayObject;
-
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -54,8 +53,8 @@ package com.onurersel.mvc.controller
 
 			if(view == _handleView)
 			{
-				_handleView.addEventListener(ButtonView.DOWN, 	downHandler);
-				_handleView.addEventListener(ButtonView.UP, 	upHandler);
+				_handleView.addEventListener(ButtonEvent.DOWN, 	downHandler);
+				_handleView.addEventListener(ButtonEvent.UP, 	upHandler);
 			}
 		}
 
@@ -65,8 +64,8 @@ package com.onurersel.mvc.controller
 
 			if(view == _handleView)
 			{
-				_handleView.removeEventListener(ButtonView.DOWN, 	downHandler);
-				_handleView.removeEventListener(ButtonView.UP, 	upHandler);
+				_handleView.removeEventListener(ButtonEvent.DOWN, 	downHandler);
+				_handleView.removeEventListener(ButtonEvent.UP, 	upHandler);
 			}
 		}
 
@@ -88,13 +87,19 @@ package com.onurersel.mvc.controller
 		{
 			_handleView.y = _handleView.parent.mouseY - downY;
 
-			if(_handleView.y < minY  ||  barHeight < handleFrame.height)			_handleView.y = minY;
-			else if(_handleView.y + handleFrame.height > barHeight)					_handleView.y = barHeight - handleFrame.height;
+			if(_handleView.y < minY  ||  barHeight < handleFrame.height)					_handleView.y = minY;
+			else if(_handleView.y + handleFrame.height > barHeight + minY)					_handleView.y = barHeight - handleFrame.height + minY;
 
 			calculatePercent();
 		}
 
 
+		override public function reset() : void
+		{
+			super.reset();
+
+			updateViewPosition();
+		}
 
 
 		/**********      UPDATE VIEW POSITION      **********/
@@ -106,7 +111,7 @@ package com.onurersel.mvc.controller
 				minY = _target.visibleArea.y;
 
 				DisplayObject(handleView).y = _target.visibleArea.y;
-				DisplayObject(handleView).x = _target.visibleArea.x + _target.visibleArea.width;
+				DisplayObject(handleView).x = _target.visibleArea.x + _target.visibleArea.width - _handleView.width/2;
 
 				barHeight = _target.visibleArea.height;
 			}
@@ -117,8 +122,9 @@ package com.onurersel.mvc.controller
 
 		public function calculatePercent() : void
 		{
-			percent = (_handleView.y - minY) / (barHeight - handleFrame.height - minY);
+			percent = (_handleView.y - minY) / (barHeight - handleFrame.height);
 
+			trace(percent);
 			if(target)			target.percent = percent;
 		}
 

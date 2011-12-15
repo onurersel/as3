@@ -6,6 +6,8 @@
 package com.onurersel.debug
 {
 	import com.onurersel.debug.console.DebugConsole;
+	import com.onurersel.debug.history.DebugHistory;
+	import com.onurersel.mvc.events.ButtonEvent;
 	import com.onurersel.mvc.model.ButtonModel;
 	import com.onurersel.mvc.model.ResizeModel;
 
@@ -39,12 +41,16 @@ package com.onurersel.debug
 		private var snappedView			: DisplayObject;
 		private var dragStartPoint		: Point;
 		private var viewStartPoint		: Point;
+		private var history				: DebugHistory;
 
 		private var console				: DebugConsole;
+
+		private var isPressingCommand	: Boolean;
 
 		private function init() : void
 		{
 			console = new DebugConsole();
+			history = new DebugHistory();
 		}
 
 		public function on() : void
@@ -54,6 +60,7 @@ package com.onurersel.debug
 
 			stage = ResizeModel.getInstance().stage;
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDownHandler);
+			console.addEventListener(ButtonEvent.CLICK, clickConsoleHandler);
 		}
 
 		public function off() : void
@@ -63,12 +70,18 @@ package com.onurersel.debug
 
 			
 			stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyDownHandler);
+			console.removeEventListener(ButtonEvent.CLICK, clickConsoleHandler);
 			stage = null;
 		}
 
 		
-		
 		/**********      HANDLERS      **********/
+
+		private function clickConsoleHandler(event : ButtonEvent) : void
+		{
+			console.hide();
+			history.clearHistory();
+		}
 
 		//SHIFT
 		private function keyDownHandler(event : KeyboardEvent) : void
@@ -79,13 +92,36 @@ package com.onurersel.debug
 				stage.addEventListener(MouseEvent.MOUSE_DOWN, downHandler);
 				 ButtonModel.getInstance().disableButtons(-1);
 			}
+
+			if(event.keyCode == Keyboard.COMMAND  ||  event.keyCode == Keyboard.CONTROL)
+			{
+				isPressingCommand = true;
+			}
+
+			if(isPressingCommand  &&  event.keyCode == Keyboard.Z)
+			{
+				history.undo();
+			}
+
+			if(isPressingCommand  &&  event.keyCode == Keyboard.Y)
+			{
+				history.redo();
+			}
 		}
 
 		private function keyUpHandler(event : KeyboardEvent) : void
 		{
-			stage.removeEventListener(KeyboardEvent.KEY_UP, keyUpHandler);
-			stage.removeEventListener(MouseEvent.MOUSE_DOWN, downHandler);
-			ButtonModel.getInstance().enableButtons();
+			if(event.keyCode == Keyboard.SHIFT)
+			{
+				stage.removeEventListener(KeyboardEvent.KEY_UP, keyUpHandler);
+				stage.removeEventListener(MouseEvent.MOUSE_DOWN, downHandler);
+				ButtonModel.getInstance().enableButtons();
+			}
+
+			if(event.keyCode == Keyboard.COMMAND  ||  event.keyCode == Keyboard.CONTROL)
+			{
+				isPressingCommand = false;
+			}
 		}
 
 		//MOUSE DRAG
@@ -98,7 +134,7 @@ package com.onurersel.debug
 				{
 					if(array[i] is DisplayObject)
 					{
-						snappedView = array[0];
+						snappedView = array[i];
 						break;
 						
 					}
@@ -107,6 +143,8 @@ package com.onurersel.debug
 				
 				if(snappedView)
 				{
+					history.addAction(snappedView, snappedView.x,  snappedView.y);
+
 					dragStartPoint = new Point(snappedView.parent.mouseX, snappedView.parent.mouseY);
 					viewStartPoint = new Point(snappedView.x,  snappedView.y);
 					stage.addEventListener(MouseEvent.MOUSE_MOVE, moveHandler);
@@ -127,6 +165,8 @@ package com.onurersel.debug
 
 		private function upHandler(event : MouseEvent) : void
 		{
+			history.addAction(snappedView, snappedView.x,  snappedView.y);
+
 			snappedView = null;
 			dragStartPoint = null;
 			viewStartPoint = null;

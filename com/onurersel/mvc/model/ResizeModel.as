@@ -6,6 +6,8 @@
 package com.onurersel.mvc.model
 {
 	import flash.display.Stage;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 
@@ -17,6 +19,9 @@ package com.onurersel.mvc.model
 		public var width 			: int;
 		public var height 			: int;
 		public var stage			: Stage;
+
+		public var appWidth			: int;
+		public var appHeight		: int;
 
 		public function ResizeModel()
 		{
@@ -32,6 +37,10 @@ package com.onurersel.mvc.model
 		public function prepare(stage : Stage) : void
 		{
 			this.stage = stage;
+
+			trace("s",stage);
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.align = StageAlign.TOP_LEFT;
 
 			resize(stage.stageWidth, stage.stageHeight);
 			stage.addEventListener(Event.RESIZE, resizeHandler);

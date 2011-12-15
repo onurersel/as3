@@ -6,6 +6,7 @@ package com.onurersel.mvc.view.sprite
 {
 	import com.onurersel.mvc.view.IView;
 
+	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.geom.Point;
@@ -20,16 +21,15 @@ package com.onurersel.mvc.view.sprite
 		private var _isListenersAdded		: Boolean;
 		private var _isShown				: Boolean;
 		private var _isSnappingPixels		: Boolean;
+
+		private var flattenedContentArray	: Array;
+		private var flattenedLayer			: Sprite;
+		private var flattenedData			: BitmapData;
 		
 		public function View()
 		{
-			_isShown = true;
-			
 			_frame = new Rectangle(0, 0, this.height, this.width);
 			margin = new Point();
-
-			show();
-			addListeners();
 		}
 
 
@@ -86,7 +86,7 @@ package com.onurersel.mvc.view.sprite
 			if(_isShown)			return false;
 			_isShown = true;
 
-			this.visible = true;
+			showAnimation();
 
 			return true;
 		}
@@ -96,9 +96,20 @@ package com.onurersel.mvc.view.sprite
 			if(!_isShown)		return false;
 			_isShown = false;
 
-			this.visible = false;
+			hideAnimation();
 
 			return true;
+		}
+
+		public function showAnimation() : void
+		{
+			this.visible = true;
+		}
+
+
+		public function hideAnimation() : void
+		{
+			this.visible = false;
 		}
 
 		/**********      REMOVE      **********/
@@ -115,6 +126,62 @@ package com.onurersel.mvc.view.sprite
 			removeFromParent();
 			hide();
 			removeListeners();
+		}
+
+
+
+		/**********      DRAW      **********/
+
+		public function flattenStaticContent(contentLayer : Sprite, smoothing : Boolean = false) : void
+		{
+			restoreFlattenedContent();
+
+			if(flattenedData)
+			{
+				flattenedData.dispose();
+				flattenedData = null;
+			}
+
+			flattenedContentArray = [];
+			flattenedLayer = contentLayer;
+			flattenedData = new BitmapData(Math.ceil(contentLayer.width)+10, Math.ceil(contentLayer.height)+10, true, 0x00000000);
+			flattenedData.draw(contentLayer);
+
+			var childCount : int = contentLayer.numChildren;
+			for (var i : int = 0; i < childCount; i++)
+			{
+				var child : DisplayObject = contentLayer.removeChildAt(0);
+				flattenedContentArray.push(child);
+			}
+			
+			contentLayer.graphics.beginBitmapFill(flattenedData, null, false, true);
+			contentLayer.graphics.drawRect(0,0,flattenedData.width, flattenedData.height);
+			contentLayer.graphics.endFill();
+		}
+
+
+		public function restoreFlattenedContent() : void
+		{
+			if(!flattenedLayer)			return;
+
+			if(flattenedData)
+			{
+				flattenedData.dispose();
+				flattenedData = null;
+			}
+
+			flattenedLayer.graphics.clear();
+
+			if(flattenedContentArray)
+			{
+				for (var j : int = 0; j < flattenedContentArray.length; j++)
+				{
+					var displayObject : DisplayObject = flattenedContentArray[j];
+					flattenedLayer.addChild(displayObject);
+					flattenedContentArray[j] = null;
+				}
+				flattenedContentArray = null;
+			}
 		}
 
 

@@ -4,6 +4,7 @@
  */
 package com.onurersel.mvc.controller
 {
+	import com.onurersel.mvc.events.ButtonEvent;
 	import com.onurersel.mvc.view.sprite.ButtonView;
 
 	import flash.display.Sprite;
@@ -34,8 +35,8 @@ package com.onurersel.mvc.controller
 			addView(leftArrow);
 			addView(rightArrow);
 
-			leftArrow.addEventListener(ButtonView.CLICK, leftClickHandler);
-			rightArrow.addEventListener(ButtonView.CLICK, rightClickHandler);
+			leftArrow.addEventListener(ButtonEvent.CLICK, leftClickHandler);
+			rightArrow.addEventListener(ButtonEvent.CLICK, rightClickHandler);
 
 			checkPagers();
 		}
@@ -105,8 +106,8 @@ package com.onurersel.mvc.controller
 
 		override public function destroy() : void
 		{
-			leftArrow.removeEventListener(ButtonView.CLICK, leftClickHandler);
-			rightArrow.removeEventListener(ButtonView.CLICK, rightClickHandler);
+			leftArrow.removeEventListener(ButtonEvent.CLICK, leftClickHandler);
+			rightArrow.removeEventListener(ButtonEvent.CLICK, rightClickHandler);
 
 			super.destroy();
 		}

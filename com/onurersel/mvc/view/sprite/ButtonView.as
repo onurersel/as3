@@ -4,19 +4,17 @@
  */
 package com.onurersel.mvc.view.sprite
 {
-	import com.onurersel.mvc.view.*;
+	import com.onurersel.mvc.events.ButtonEvent;
 	import com.onurersel.mvc.model.ButtonModel;
 	import com.onurersel.mvc.model.ResizeModel;
+	import com.onurersel.mvc.view.*;
 
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 
 	public class ButtonView extends View implements IButtonView
 	{
-		static public const				CLICK		: String = "CLICK";
-		static public const				DOWN		: String = "DOWN";
-		static public const				UP			: String = "UP";
-		static public const				MOVE		: String = "MOVE";
+		
 
 
 		private var _isActivated		: Boolean;
@@ -28,6 +26,7 @@ package com.onurersel.mvc.view.sprite
 			this.tabEnabled = false;
 
 			activate();
+			addListeners();
 		}
 
 		/**********      ACTIVATE      **********/
@@ -40,8 +39,6 @@ package com.onurersel.mvc.view.sprite
 			this.buttonMode = true;
 			this.mouseEnabled = true;
 
-			addListeners();
-
 			return true;
 		}
 
@@ -53,7 +50,7 @@ package com.onurersel.mvc.view.sprite
 			this.buttonMode = false;
 			this.mouseEnabled = false;
 
-			removeListeners();
+			upAnimation();
 
 			return true;
 		}
@@ -71,6 +68,8 @@ package com.onurersel.mvc.view.sprite
 			this.addEventListener(MouseEvent.MOUSE_OVER, 								overHandler);
 			this.addEventListener(MouseEvent.MOUSE_OUT, 								outHandler);
 			this.addEventListener(MouseEvent.MOUSE_DOWN, 								downHandler);
+
+			if(!ResizeModel.getInstance().stage)		ResizeModel.getInstance().stage = stage;
 			ResizeModel.getInstance().stage.addEventListener(MouseEvent.MOUSE_UP, 		upHandler);
 
 
@@ -79,7 +78,7 @@ package com.onurersel.mvc.view.sprite
 
 		override public function removeListeners() : Boolean
 		{
-			if(!super.addListeners())			return false;
+			if(!super.removeListeners())			return false;
 
 			this.removeEventListener(MouseEvent.CLICK, 									clickHandler);
 			this.removeEventListener(MouseEvent.MOUSE_OVER, 							overHandler);
@@ -99,7 +98,7 @@ package com.onurersel.mvc.view.sprite
 		{
 			clickAnimation();
 
-			if(!ButtonModel.getInstance().isButtonsDisabled)		this.dispatchEvent(new Event(CLICK));
+			if(!ButtonModel.getInstance().isButtonsDisabled)		this.dispatchEvent(new ButtonEvent(ButtonEvent.CLICK));
 		}
 
 		protected function overHandler(event : MouseEvent) : void
@@ -109,14 +108,14 @@ package com.onurersel.mvc.view.sprite
 
 		protected function outHandler(event : MouseEvent) : void
 		{
-			upAnimation();
+			outAnimation();
 		}
 
 		protected function downHandler(event : MouseEvent) : void
 		{
 			isPressed = true;
 
-			if(!ButtonModel.getInstance().isButtonsDisabled)		this.dispatchEvent(new Event(DOWN));
+			if(!ButtonModel.getInstance().isButtonsDisabled)		this.dispatchEvent(new ButtonEvent(ButtonEvent.DOWN));
 			downAnimation();
 		}
 
@@ -125,7 +124,7 @@ package com.onurersel.mvc.view.sprite
 			if(!isPressed)				return;
 			isPressed = false;
 
-			if(!ButtonModel.getInstance().isButtonsDisabled)		this.dispatchEvent(new Event(UP));
+			if(!ButtonModel.getInstance().isButtonsDisabled)		this.dispatchEvent(new ButtonEvent(ButtonEvent.UP));
 			upAnimation();
 		}
 
@@ -141,6 +140,11 @@ package com.onurersel.mvc.view.sprite
 		public function overAnimation() : void
 		{
 			
+		}
+
+		public function outAnimation() : void
+		{
+
 		}
 
 		public function downAnimation() : void

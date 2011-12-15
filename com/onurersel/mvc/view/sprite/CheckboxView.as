@@ -4,7 +4,10 @@
  */
 package com.onurersel.mvc.view.sprite
 {
+	import com.onurersel.mvc.events.ButtonEvent;
+
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 
 	public class CheckboxView extends ButtonView
 	{
@@ -12,13 +15,15 @@ package com.onurersel.mvc.view.sprite
 
 		public function CheckboxView()
 		{
-			this.addEventListener(CLICK, clickCheckboxHandler);
+			
 		}
 
 		/**********      HANDLERS      **********/
 
-		private function clickCheckboxHandler(event : Event) : void
+		override protected function clickHandler(event : MouseEvent) : void
 		{
+			super.clickHandler(event);
+
 			if(isSelected)			deselected();
 			else					selected();
 		}

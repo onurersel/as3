@@ -11,7 +11,6 @@ com.onurersel.mvc.controller{
 	import com.onurersel.mvc.view.sprite.View;
 
 	import flash.display.DisplayObject;
-
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Rectangle;

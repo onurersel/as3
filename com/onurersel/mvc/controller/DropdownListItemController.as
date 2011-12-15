@@ -4,6 +4,7 @@
  */
 package com.onurersel.mvc.controller
 {
+	import com.onurersel.mvc.events.ButtonEvent;
 	import com.onurersel.mvc.view.sprite.ButtonView;
 	import com.onurersel.mvc.view.sprite.DropdownButtonView;
 	import com.onurersel.mvc.view.sprite.View;
@@ -16,7 +17,7 @@ package com.onurersel.mvc.controller
 		{
 			super(view);
 
-			view.addEventListener(ButtonView.CLICK, clickHandler);
+			view.addEventListener(ButtonEvent.CLICK, clickHandler);
 		}
 
 		private function clickHandler(event : Event) : void
@@ -43,7 +44,7 @@ package com.onurersel.mvc.controller
 		{
 			super.destroy();
 
-			view.removeEventListener(ButtonView.CLICK, clickHandler);
+			view.removeEventListener(ButtonEvent.CLICK, clickHandler);
 		}
 	}
 }

@@ -6,6 +6,8 @@ package com.onurersel.debug.console
 {
 	import avmplus.getQualifiedClassName;
 
+	import com.onurersel.mvc.events.ButtonEvent;
+
 	import com.onurersel.mvc.model.ButtonModel;
 	import com.onurersel.mvc.view.sprite.ButtonView;
 
@@ -36,6 +38,7 @@ package com.onurersel.debug.console
 			var style : StyleSheet = new StyleSheet();
 			style.setStyle("xml", {fontSize:'9px', fontFamily:'_sans', leading:'-2px'});
 			style.setStyle("className", {color:hexToCss(0xDDDDDD)});
+			style.setStyle("instanceName", {color:hexToCss(0xDDDDDD)});
 			style.setStyle("x", {color:hexToCss(0x00FF00)});
 			style.setStyle("y", {color:hexToCss(0xFFFF00)});
 
@@ -52,7 +55,7 @@ package com.onurersel.debug.console
 			throwButton = new DebugThrowButton();
 			this.addChild(throwButton);
 			throwButton.y = 45;
-			throwButton.addEventListener(ButtonView.CLICK, clickDebugThrowHandler);
+			throwButton.addEventListener(ButtonEvent.CLICK, clickDebugThrowHandler);
 
 			this.mouseChildren = true;
 
@@ -71,6 +74,7 @@ package com.onurersel.debug.console
 			objectBeingDebugged = view;
 
 			xml.className = getQualifiedClassName(view);
+			xml.instanceName = view.name;
 			xml.x = "x: " + view.x;
 			xml.y = "y: " + view.y;
 
@@ -93,13 +97,6 @@ package com.onurersel.debug.console
 			objectBeingDebugged = null;
 
 			return true;
-		}
-
-		override protected function clickHandler(event : MouseEvent) : void
-		{
-			super.clickHandler(event);
-
-			if(!ButtonModel.getInstance().isButtonsDisabled)		hide();
 		}
 	}
 }

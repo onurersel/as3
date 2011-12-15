@@ -5,7 +5,6 @@
 package com.onurersel.mvc.controller
 {
 	import com.onurersel.mvc.view.IButtonView;
-	import com.onurersel.mvc.view.sprite.ButtonView;
 
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
@@ -39,13 +38,18 @@ package com.onurersel.mvc.controller
 
 			if(listControllerClass == null)			listControllerClass = ListController;
 			listController = new listControllerClass(view);
-			listController.prepare(data, listItemClass, listItemControllerClass, visibleArea.width, delegate);
+			listController.prepare(data, listItemClass, listItemControllerClass, visibleArea, delegate);
 
 			scrollController.target = this;
 			if(listController.container.height < visibleArea.height)			scrollController.hide();
 			
 			listController.container.mask = mask;
-			
+		}
+
+		public function update(array : Array) : void
+		{
+			scrollController.reset();
+			listController.updateData(array);
 		}
 
 		override public function destroy() : void
@@ -56,6 +60,13 @@ package com.onurersel.mvc.controller
 			super.destroy();
 		}
 
+
+		override public function reset() : void
+		{
+			super.reset();
+			scrollController.reset();
+			listController.reset();
+		}
 
 
 		/**********      GETTER      **********/
@@ -87,7 +98,7 @@ package com.onurersel.mvc.controller
 			if(listController.container.height < mask.height)				return;
 
 			var targetY : int = (listController.container.height - mask.height) * value;
-			listController.container.y = -targetY;
+			listController.container.y = listController.visibleArea.y - targetY;
 		}
 	}
 }

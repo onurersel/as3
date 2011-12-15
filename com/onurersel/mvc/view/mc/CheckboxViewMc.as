@@ -4,7 +4,7 @@
  */
 package com.onurersel.mvc.view.mc
 {
-	import flash.events.Event;
+	import flash.events.MouseEvent;
 
 	public class CheckboxViewMc extends ButtonViewMc
 	{
@@ -12,13 +12,14 @@ package com.onurersel.mvc.view.mc
 
 		public function CheckboxViewMc()
 		{
-			this.addEventListener(CLICK, clickCheckboxHandler);
 		}
 
 		/**********      HANDLERS      **********/
 
-		private function clickCheckboxHandler(event : Event) : void
+		override protected function clickHandler(event : MouseEvent) : void
 		{
+			super.clickHandler(event);
+
 			if(isSelected)			deselected();
 			else					selected();
 		}

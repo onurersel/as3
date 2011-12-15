@@ -5,6 +5,7 @@
 package com.onurersel.mvc.controller
 {
 	import com.onurersel.mvc.model.ResizeModel;
+	import com.onurersel.mvc.view.IButtonView;
 	import com.onurersel.mvc.view.IView;
 	import com.onurersel.mvc.view.sprite.View;
 
@@ -21,6 +22,7 @@ package com.onurersel.mvc.controller
 
 		private var _isListenersAdded			: Boolean;
 		private var _isShown					: Boolean;
+		private var _isActivated				: Boolean;
 
 
 		public function ViewController(view : Sprite)
@@ -29,8 +31,6 @@ package com.onurersel.mvc.controller
 
 			_viewArray 			= [];
 			_viewControllerArray = [];
-
-			_isShown = true;
 		}
 
 
@@ -45,7 +45,7 @@ package com.onurersel.mvc.controller
 
 			for (var i : int = 0; i < _viewArray.length; i++)
 			{
-				var targetView : View = _viewArray[i];
+				var targetView : IView = _viewArray[i];
 				targetView.show();
 			}
 
@@ -67,7 +67,7 @@ package com.onurersel.mvc.controller
 
 			for (var i : int = 0; i < _viewArray.length; i++)
 			{
-				var targetView : View = _viewArray[i];
+				var targetView : IView = _viewArray[i];
 				targetView.hide();
 			}
 
@@ -92,7 +92,7 @@ package com.onurersel.mvc.controller
 
 			for (var i : int = 0; i < _viewArray.length; i++)
 			{
-				var targetView : View = _viewArray[i];
+				var targetView : IView = _viewArray[i];
 				targetView.addListeners();
 			}
 
@@ -114,7 +114,7 @@ package com.onurersel.mvc.controller
 
 			for (var i : int = 0; i < _viewArray.length; i++)
 			{
-				var targetView : View = _viewArray[i];
+				var targetView : IView = _viewArray[i];
 				targetView.removeListeners();
 			}
 
@@ -126,6 +126,52 @@ package com.onurersel.mvc.controller
 
 			return true;
 		}
+
+
+
+
+		/**********      ACTIVATE      **********/
+
+		public function activate(force : Boolean = false) : Boolean
+		{
+			if(!force  &&  _isActivated)			return false;
+			_isActivated = true;
+
+			for (var i : int = 0; i < _viewArray.length; i++)
+			{
+				var targetView : IView = _viewArray[i];
+				if(targetView is IButtonView)		IButtonView(targetView).activate();
+			}
+
+			for (var j : int = 0; j < _viewControllerArray.length; j++)
+			{
+				var viewController : ViewController = _viewControllerArray[j];
+				viewController.activate();
+			}
+
+			return true;
+		}
+
+		public function deactivate(force : Boolean = false) : Boolean
+		{
+			if(!force  &&  !_isActivated)			return false;
+			_isActivated = false;
+
+			for (var i : int = 0; i < _viewArray.length; i++)
+			{
+				var targetView : View = _viewArray[i];
+				if(targetView is IButtonView)		IButtonView(targetView).deactivate();
+			}
+
+			for (var j : int = 0; j < _viewControllerArray.length; j++)
+			{
+				var viewController : ViewController = _viewControllerArray[j];
+				viewController.deactivate();
+			}
+
+			return true;
+		}
+
 		
 		
 		/**********      HANDLERS      **********/

@@ -7,6 +7,7 @@ package com.onurersel.mvc.controller
 	import com.onurersel.mvc.view.sprite.View;
 
 	import flash.display.Sprite;
+	import flash.geom.Rectangle;
 
 	public class ListController extends ViewController
 	{
@@ -14,7 +15,10 @@ package com.onurersel.mvc.controller
 		public var itemArray			: Array;
 
 		public var isWrapping			: Boolean;
-		public var width				: int;
+		public var visibleArea			: Rectangle;
+		private var itemViewClass 		: Class;
+		private var controllerClass 	: Class;
+		private var delegate 			: *;
 
 		public function ListController(view : Sprite)
 		{
@@ -30,10 +34,15 @@ package com.onurersel.mvc.controller
 
 		/**********      PREPARE      **********/
 
-		public function prepare(data : Array, itemViewClass : Class, controllerClass : Class, width : int, delegate : *) : void
+		public function prepare(data : Array, itemViewClass : Class, controllerClass : Class, visibleArea : Rectangle, delegate : *) : void
 		{
-			this.width = width;
+			this.visibleArea = visibleArea;
+			this.itemViewClass = itemViewClass;
+			this.controllerClass = controllerClass;
+			this.delegate = delegate;
 
+			if(!data)		return;
+			
 			var itemController 	: ListItemController;
 			var itemView 		: View;
 			for (var i : int = 0; i < data.length; i++)
@@ -42,6 +51,8 @@ package com.onurersel.mvc.controller
 
 				itemView = new itemViewClass();
 				container.addChild(itemView);
+				container.x = visibleArea.x;
+				container.y = visibleArea.y;
 
 				itemController = new controllerClass(itemView);
 				itemController.updateData(object);
@@ -55,6 +66,75 @@ package com.onurersel.mvc.controller
 			}
 
 			updatePositions();
+		}
+
+		public function updateData(data : Array) : void
+		{
+			clearContent();
+
+			itemArray = [];
+
+			if(!data)		return;
+
+			var itemController 	: ListItemController;
+			var itemView 		: View;
+			for (var i : int = 0; i < data.length; i++)
+			{
+				var object : * = data[i];
+
+				itemView = new itemViewClass();
+				container.addChild(itemView);
+				container.x = visibleArea.x;
+				container.y = visibleArea.y;
+
+				itemController = new controllerClass(itemView);
+				itemController.updateData(object);
+				itemController.delegate = delegate;
+				itemController.id = i;
+
+				itemArray.push(itemController);
+
+				addView(itemView);
+				addController(itemController);
+			}
+
+			updatePositions();
+		}
+
+
+		override public function reset() : void
+		{
+			super.reset();
+			clearContent();
+		}
+
+
+		private function clearContent() : void
+		{
+			if(itemArray)
+			{
+				for (var i : int = 0; i < itemArray.length; i++)
+				{
+					itemArray[i] = null;
+				}
+				itemArray = null;
+			}
+
+
+			for (i  = 0; i < viewArray.length; i)
+			{
+				var view : View = viewArray[i];
+				view.removeFromParent();
+				view.destroy();
+				removeView(view);
+			}
+
+			for (i = 0; i < viewControllerArray.length; i)
+			{
+				var controller : ViewController = viewControllerArray[i];
+				controller.destroy();
+				removeController(controller);
+			}
 		}
 
 
@@ -86,7 +166,7 @@ package com.onurersel.mvc.controller
 
 					if(isWrapping)
 					{
-						if(currentX + View(listItemController.view).frame.width > width)
+						if(currentX + View(listItemController.view).frame.width > visibleArea.width)
 						{
 							currentX = - View(listItemController.view).frame.x;
 							currentY += View(listItemController.view).frame.height + View(listItemController.view).margin.x;
@@ -109,11 +189,7 @@ package com.onurersel.mvc.controller
 			view.removeChild(container);
 			container = null;
 
-			for (var i : int = 0; i < itemArray.length; i++)
-			{
-				itemArray[i] = null;
-			}
-			itemArray = null;
+			clearContent();
 			
 			super.destroy();
 		}

@@ -7,11 +7,11 @@ package com.onurersel.mvc.view.mc
 	import com.onurersel.mvc.view.IView;
 
 	import flash.display.DisplayObject;
-	import flash.display.Sprite;
+	import flash.display.MovieClip;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
-	public class ViewMc extends Sprite implements IView
+	public class ViewMc extends MovieClip implements IView
 	{
 		private var _frame					: Rectangle;
 		private var isFrameSettedManually	: Boolean;
@@ -23,7 +23,6 @@ package com.onurersel.mvc.view.mc
 		
 		public function ViewMc()
 		{
-			_isShown = true;
 			
 			_frame = new Rectangle(0, 0, this.height, this.width);
 			margin = new Point();
@@ -85,7 +84,7 @@ package com.onurersel.mvc.view.mc
 			if(_isShown)			return false;
 			_isShown = true;
 
-			this.visible = true;
+			showAnimation();
 
 			return true;
 		}
@@ -95,9 +94,21 @@ package com.onurersel.mvc.view.mc
 			if(!_isShown)		return false;
 			_isShown = false;
 
-			this.visible = false;
+			hideAnimation();
 
 			return true;
+		}
+
+
+		public function showAnimation() : void
+		{
+			this.visible = true;
+		}
+
+
+		public function hideAnimation() : void
+		{
+			this.visible = false;
 		}
 
 

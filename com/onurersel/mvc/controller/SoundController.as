@@ -5,7 +5,7 @@
 
 package com.onurersel.mvc.controller
 {
-	import com.greensock.TweenMax;
+	import com.greensock.TweenLite;
 	import com.onurersel.mvc.model.vo.SoundVO;
 
 	import flash.events.EventDispatcher;
@@ -13,6 +13,17 @@ package com.onurersel.mvc.controller
 	import flash.media.SoundChannel;
 	import flash.utils.Dictionary;
 
+
+	/**
+	 *
+	 *
+	 *
+	 * REQUIRES TweenLite from greensocks
+	 * http://www.greensock.com/tweenlite/
+	 * 
+	 *
+	 *
+	 */
 	public class SoundController extends EventDispatcher
 	{
 		static private var instance : SoundController;
@@ -92,9 +103,10 @@ package com.onurersel.mvc.controller
 
 			soundVO.channel = soundVO.sound.play(startPosition, loopAmount);
 
-			TweenMax.killTweensOf(soundVO.channel);
-			soundVO.volume = 0;
-			TweenMax.to(soundVO.channel, fadeInTime, {
+			TweenLite.killTweensOf(soundVO.channel);
+			soundVO.channel.soundTransform.volume = 0;
+			
+			TweenLite.to(soundVO.channel, fadeInTime, {
 						volume:soundVO.volume * globalVolume
 					});
 
@@ -105,10 +117,10 @@ package com.onurersel.mvc.controller
 		{
 			var soundVO : SoundVO = soundDictionary[title];
 
-			TweenMax.killTweensOf(soundVO.channel);
-			TweenMax.to(soundVO.channel, fadeDuration, {
+			TweenLite.killTweensOf(soundVO.channel);
+			TweenLite.to(soundVO.channel, fadeDuration, {
 						volume:0,
-						onFadeComplete:function()
+						onFadeComplete:function():void
 						{
 							soundVO.position = 0;
 							soundVO.volume = 0;
@@ -127,10 +139,10 @@ package com.onurersel.mvc.controller
 				soundVO.position = 0;
 				soundVO.isPlaying = false;
 
-				TweenMax.killTweensOf(soundVO.channel);
-				TweenMax.to(soundVO.channel, fadeDuration, {
+				TweenLite.killTweensOf(soundVO.channel);
+				TweenLite.to(soundVO.channel, fadeDuration, {
 						volume:0,
-						onFadeComplete:function()
+						onFadeComplete:function():void
 						{
 							soundVO.position = 0;
 							soundVO.volume = 0;
@@ -145,12 +157,15 @@ package com.onurersel.mvc.controller
 		{
 			var soundVo : SoundVO = soundDictionary[title];
 			soundVo.position = soundVo.channel.position;
+			soundVo.isPlaying = false;
 			soundVo.channel.stop();
 		}
 
 		public function resume(title : String) : SoundChannel
 		{
 			var soundVO : SoundVO = soundDictionary[title];
+			if(soundVO.isPlaying)		return soundVO.channel;
+
 			soundVO.channel = soundVO.sound.play(soundVO.position,  0);
 			return soundVO.channel;
 		}
@@ -180,8 +195,8 @@ package com.onurersel.mvc.controller
 			{
 				soundVO.volume = volume;
 				
-				TweenMax.killTweensOf(soundVO.channel);
-				TweenMax.to(soundVO.channel, fadeDuration, {
+				TweenLite.killTweensOf(soundVO.channel);
+				TweenLite.to(soundVO.channel, fadeDuration, {
 							volume:soundVO.volume * globalVolume
 						});
 			}
@@ -195,8 +210,8 @@ package com.onurersel.mvc.controller
 			for (var i : int = 0; i < soundVector.length; i++)
 			{
 				var soundVO : SoundVO = soundVector[i];
-				TweenMax.killTweensOf(soundVO.channel);
-				TweenMax.to(soundVO.channel, fadeDuration, {
+				TweenLite.killTweensOf(soundVO.channel);
+				TweenLite.to(soundVO.channel, fadeDuration, {
 							volume:soundVO.volume * globalVolume
 						});
 			}
