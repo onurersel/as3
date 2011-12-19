@@ -124,11 +124,14 @@ package com.onurersel.mvc.controller
 		{
 			percent = (_handleView.y - minY) / (barHeight - handleFrame.height);
 
-			trace(percent);
 			if(target)			target.percent = percent;
 		}
 
 
+		public function updatePosition(percent : Number) : void
+		{
+			_handleView.y = minY + ((barHeight - handleFrame.height) * percent);
+		}
 
 
 		/**********      GETTER      **********/

@@ -6,6 +6,8 @@ package com.onurersel.debug.console
 {
 	import avmplus.getQualifiedClassName;
 
+	import com.onurersel.debug.Debug;
+
 	import com.onurersel.mvc.events.ButtonEvent;
 
 	import com.onurersel.mvc.model.ButtonModel;
@@ -24,13 +26,14 @@ package com.onurersel.debug.console
 
 		private var textField			: TextField;
 		private var throwButton			: DebugThrowButton;
+		private var releaseButton		: DebugReleaseSnapped;
 		private var xml					: XML;
 		private var objectBeingDebugged	: DisplayObject;
 
 		public function DebugConsole()
 		{
 			this.graphics.beginFill(0x000000, .7);
-			this.graphics.drawRect(0,0,130,62);
+			this.graphics.drawRect(0,0,130,76);
 			this.graphics.endFill();
 
 			xml = <xml><className></className><x>x:</x><y>y:</y></xml>;
@@ -57,9 +60,20 @@ package com.onurersel.debug.console
 			throwButton.y = 45;
 			throwButton.addEventListener(ButtonEvent.CLICK, clickDebugThrowHandler);
 
+			releaseButton = new DebugReleaseSnapped();
+			this.addChild(releaseButton);
+			releaseButton.y = 60;
+			releaseButton.addEventListener(ButtonEvent.CLICK, clickReleaseHandler);
+
 			this.mouseChildren = true;
 
 			show();
+		}
+
+
+		private function clickReleaseHandler(event : ButtonEvent) : void
+		{
+			Debug.getInstance().releaseSnapped(this);
 		}
 
 		private function clickDebugThrowHandler(event : Event) : void

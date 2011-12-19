@@ -1,21 +1,23 @@
 /**
  * @author Onur Ersel
- * @date 22.11.2011 / 14:37
+ * @date 19.12.2011 / 12:40
  */
 package com.onurersel.debug.console
 {
 	import com.onurersel.mvc.view.sprite.ButtonView;
 
 	import flash.events.MouseEvent;
+
 	import flash.text.TextField;
+
 	import flash.text.TextFormat;
 
-	public class DebugThrowButton extends ButtonView
+	public class DebugReleaseSnapped extends ButtonView
 	{
 		private var textField		: TextField;
 		private var format			: TextFormat;
 
-		public function DebugThrowButton()
+		public function DebugReleaseSnapped()
 		{
 			this.graphics.beginFill(0x000000, .5);
 			this.graphics.drawRect(2, 2, 126, 13);
@@ -24,7 +26,7 @@ package com.onurersel.debug.console
 			format = new TextFormat("_sans", 9, 0xDDDDDD, true);
 			format.align = "center";
 			textField = new TextField();
-			textField.text = "DEBUG";
+			textField.text = "RELEASE";
 			textField.width = 126;
 			textField.selectable = false;
 			textField.setTextFormat(format);

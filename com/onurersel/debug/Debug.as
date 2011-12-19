@@ -6,6 +6,7 @@
 package com.onurersel.debug
 {
 	import com.onurersel.debug.console.DebugConsole;
+	import com.onurersel.debug.debug_display_list.DebugDisplayList;
 	import com.onurersel.debug.history.DebugHistory;
 	import com.onurersel.mvc.events.ButtonEvent;
 	import com.onurersel.mvc.model.ButtonModel;
@@ -45,12 +46,15 @@ package com.onurersel.debug
 
 		private var console				: DebugConsole;
 
+		private var displayList			: DebugDisplayList;
+
 		private var isPressingCommand	: Boolean;
 
 		private function init() : void
 		{
 			console = new DebugConsole();
 			history = new DebugHistory();
+			displayList = new DebugDisplayList();
 		}
 
 		public function on() : void
@@ -130,16 +134,19 @@ package com.onurersel.debug
 			var array : Array = stage.getObjectsUnderPoint(new Point(stage.mouseX, stage.mouseY));
 			if(array.length > 0)
 			{
+				/*
 				for (var i : int = array.length-1; i >= 0; i--)
 				{
 					if(array[i] is DisplayObject)
 					{
-						snappedView = array[i];
+						if(array[i]  ==  lockTarget)		snappedView = array[i];
 						break;
-						
+
 					}
 
 				}
+				*/
+
 				
 				if(snappedView)
 				{
@@ -156,6 +163,9 @@ package com.onurersel.debug
 				}
 				else
 				{
+					displayList.displayArray(array);
+					ResizeModel.getInstance().stage.addChild(displayList);
+					
 					return;
 				}
 
@@ -167,7 +177,6 @@ package com.onurersel.debug
 		{
 			history.addAction(snappedView, snappedView.x,  snappedView.y);
 
-			snappedView = null;
 			dragStartPoint = null;
 			viewStartPoint = null;
 
@@ -191,8 +200,16 @@ package com.onurersel.debug
 		
 		/**********      SNAP      **********/
 		
-		
+		public function setSnappedView(displayObject : *, debugDisplayList : DebugDisplayList) : void
+		{
+			this.snappedView = displayObject;
+		}
 
+		public function releaseSnapped(debugConsole : DebugConsole) : void
+		{
+			this.snappedView = null;
+			console.hide();
+		}
 
 		/**********      GETTER      **********/
 

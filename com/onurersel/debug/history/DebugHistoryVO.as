@@ -19,5 +19,11 @@ package com.onurersel.debug.history
 			if(this.item == vo.item, this.x == vo.x,  this.y == vo.y)			return true;
 			else																return false;
 		}
+
+
+		public function destroy() : void
+		{
+			item = null;
+		}
 	}
 }

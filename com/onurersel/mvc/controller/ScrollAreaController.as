@@ -4,9 +4,11 @@
  */
 package com.onurersel.mvc.controller
 {
+	import com.onurersel.mvc.model.ResizeModel;
 	import com.onurersel.mvc.view.IButtonView;
 
 	import flash.display.Sprite;
+	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
 
 	public class ScrollAreaController extends ViewController
@@ -24,6 +26,8 @@ package com.onurersel.mvc.controller
 
 			mask = new Sprite();
 			view.addChild(mask);
+
+			_percent = 0;
 		}
 
 
@@ -44,6 +48,8 @@ package com.onurersel.mvc.controller
 			if(listController.container.height < visibleArea.height)			scrollController.hide();
 			
 			listController.container.mask = mask;
+
+			addListeners();
 		}
 
 		public function update(array : Array) : void
@@ -66,6 +72,45 @@ package com.onurersel.mvc.controller
 			super.reset();
 			scrollController.reset();
 			listController.reset();
+		}
+
+
+
+
+		/**********      LISTENERS      **********/
+
+		override public function addListeners() : Boolean
+		{
+			if(!super.addListeners())			return false;
+
+			ResizeModel.getInstance().stage.addEventListener(MouseEvent.MOUSE_WHEEL, scrollWheelHandler);
+
+			return true;
+		}
+
+
+		
+
+
+		override public function removeListeners() : Boolean
+		{
+			if(!super.removeListeners())		return false;
+
+			ResizeModel.getInstance().stage.removeEventListener(MouseEvent.MOUSE_WHEEL, scrollWheelHandler);
+
+			return true;
+		}
+
+		private function scrollWheelHandler(event : MouseEvent) : void
+		{
+			if(listController.view.mouseX < visibleArea.width + visibleArea.x  &&  listController.view.mouseX > visibleArea.x)
+			{
+				if(listController.view.mouseY < visibleArea.height + visibleArea.y  &&  listController.view.mouseY > visibleArea.y)
+				{
+					percent += -event.delta * .01;
+				}
+			}
+
 		}
 
 
@@ -93,10 +138,16 @@ package com.onurersel.mvc.controller
 
 		public function set percent(value : Number) : void
 		{
+			if(value < 0)			value = 0;
+			else if (value > 1)		value = 1;
+
 			_percent = value;
+			trace(_percent);
 
 			if(listController.container.height < mask.height)				return;
 
+			scrollController.updatePosition(percent);
+			
 			var targetY : int = (listController.container.height - mask.height) * value;
 			listController.container.y = listController.visibleArea.y - targetY;
 		}

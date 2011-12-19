@@ -38,7 +38,6 @@ package com.onurersel.mvc.model
 		{
 			this.stage = stage;
 
-			trace("s",stage);
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 

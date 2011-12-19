@@ -1,38 +1,48 @@
 /**
  * @author Onur Ersel
- * @date 22.11.2011 / 14:37
+ * @date 19.12.2011 / 11:24
  */
-package com.onurersel.debug.console
+package com.onurersel.debug.debug_display_list
 {
 	import com.onurersel.mvc.view.sprite.ButtonView;
 
 	import flash.events.MouseEvent;
+	import flash.geom.Rectangle;
+
 	import flash.text.TextField;
+
 	import flash.text.TextFormat;
 
-	public class DebugThrowButton extends ButtonView
+	public class DebugButtonListItem extends ButtonView
 	{
 		private var textField		: TextField;
 		private var format			: TextFormat;
 
-		public function DebugThrowButton()
+		public function DebugButtonListItem()
 		{
 			this.graphics.beginFill(0x000000, .5);
-			this.graphics.drawRect(2, 2, 126, 13);
+			this.graphics.drawRect(2, 2, 400, 13);
 			this.graphics.endFill();
 
 			format = new TextFormat("_sans", 9, 0xDDDDDD, true);
-			format.align = "center";
+			format.align = "left";
 			textField = new TextField();
-			textField.text = "DEBUG";
-			textField.width = 126;
+			textField.defaultTextFormat = format;
+			textField.width = 400;
 			textField.selectable = false;
-			textField.setTextFormat(format);
 			textField.y = 2;
+			textField.x = 2;
 
 			this.addChild(textField);
+
+			this.frame = new Rectangle(0,0,400,18);
 		}
 
+
+		public function setText(text : String) : void
+		{
+			textField.text = text;
+		}
 
 		override protected function downHandler(event : MouseEvent) : void
 		{
@@ -40,7 +50,7 @@ package com.onurersel.debug.console
 
 			this.graphics.clear();
 			this.graphics.beginFill(0xFFFFFF, .5);
-			this.graphics.drawRect(2, 2, 126, 13);
+			this.graphics.drawRect(2, 2, 400, 13);
 			this.graphics.endFill();
 
 			format.color = 0x999999;
@@ -50,17 +60,29 @@ package com.onurersel.debug.console
 
 		override protected function upHandler(event : MouseEvent) : Boolean
 		{
-			if(!super.upHandler(event))			return false;
+			if(!super.upHandler(event))		return false;
 
 			this.graphics.clear();
 			this.graphics.beginFill(0x000000, .5);
-			this.graphics.drawRect(2, 2, 126, 13);
+			this.graphics.drawRect(2, 2, 400, 13);
 			this.graphics.endFill();
 
 			format.color = 0xDDDDDD;
 			textField.setTextFormat(format);
 
 			return true;
+		}
+
+
+		override public function destroy() : void
+		{
+			removeFromParent();
+			this.removeChild(textField);
+			textField = null;
+			format = null;
+
+			super.destroy();
+
 		}
 	}
 }

@@ -119,13 +119,15 @@ package com.onurersel.mvc.view.sprite
 			downAnimation();
 		}
 
-		protected function upHandler(event : MouseEvent) : void
+		protected function upHandler(event : MouseEvent) : Boolean
 		{
-			if(!isPressed)				return;
+			if(!isPressed)				return false;
 			isPressed = false;
 
 			if(!ButtonModel.getInstance().isButtonsDisabled)		this.dispatchEvent(new ButtonEvent(ButtonEvent.UP));
 			upAnimation();
+
+			return true;
 		}
 
 		

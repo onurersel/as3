@@ -13,12 +13,6 @@ package com.onurersel.debug.history
 		private var historyArray		: Array;
 		private var currentHistoryStep	: int;
 
-		/**
-		 * her action ı add le
-		 * undo da hep bi onceki action ı ver
-		 * current history, array ın son itemı diilse ve add action çağırıldıysa arrayın currentten sonrasını temizle
-		 * max 20 action tut
-		 */
 
 		public function DebugHistory()
 		{
@@ -31,7 +25,7 @@ package com.onurersel.debug.history
 			if(currentHistoryStep+1 != historyArray.length)
 			{
 				var cuttedArray : Array = historyArray.splice(currentHistoryStep, historyArray.length - currentHistoryStep);
-				ArrayCleaner.cleanArray(cuttedArray);
+				ArrayCleaner.cleanArray(cuttedArray, "destroy");
 			}
 
 			var vo : DebugHistoryVO = new DebugHistoryVO();
@@ -41,7 +35,13 @@ package com.onurersel.debug.history
 
 			if(!historyArray[currentHistoryStep]  ||  !vo.isIdenticalWidth(historyArray[currentHistoryStep]))
 			{
-				trace("NOT IDENTICAL");
+				if(historyArray.length == 20)
+				{
+					var oldVO : DebugHistoryVO = historyArray.splice(0,1)[0];
+					oldVO.destroy();
+					oldVO = null;
+				}
+
 				historyArray.push(vo);
 				currentHistoryStep = historyArray.length - 1;
 			}
@@ -63,7 +63,6 @@ package com.onurersel.debug.history
 		public function redo() : void
 		{
 			if(currentHistoryStep + 1 >= historyArray.length)		return;
-			trace(currentHistoryStep);
 
 			currentHistoryStep++;
 			var vo : DebugHistoryVO = historyArray[currentHistoryStep];
