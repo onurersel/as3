@@ -17,6 +17,7 @@ package com.onurersel.mvc.view.mc
 	{
 		private var _isActivated		: Boolean;
 		private var isPressed			: Boolean;
+		private var _isOver				: Boolean;
 
 		public function ButtonViewMc()
 		{
@@ -102,11 +103,13 @@ package com.onurersel.mvc.view.mc
 
 		protected function overHandler(event : MouseEvent) : void
 		{
+			_isOver = true;
 			overAnimation();
 		}
 
 		protected function outHandler(event : MouseEvent) : void
 		{
+			_isOver = false;
 			outAnimation();
 		}
 
@@ -161,6 +164,12 @@ package com.onurersel.mvc.view.mc
 		public function get isActivated() : Boolean
 		{
 			return _isActivated;
+		}
+
+
+		public function get isOver() : Boolean
+		{
+			return _isOver;
 		}
 	}
 }

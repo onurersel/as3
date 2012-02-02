@@ -54,12 +54,16 @@ package com.onurersel.mvc.controller
 		
 		private function clickHandler(event : Event) : void
 		{
-			if(selectedRadioButton)			selectedRadioButton.deselected();
-			selectedRadioButton = event.target as RadioButtonView;
-			selectedRadioButton.selected();
+			changeSelected(event.target as RadioButtonView);
 		}
 
 
+		public function changeSelected(button : RadioButtonView) : void
+		{
+			if(selectedRadioButton)			selectedRadioButton.deselected();
+			selectedRadioButton = button;
+			selectedRadioButton.selected();
+		}
 		
 		
 		/**********      RESET      **********/

@@ -36,7 +36,7 @@ package com.onurersel.mvc.view.mc
 		{
 			super.upHandler(event);
 
-			ResizeModel.getInstance().stage.removeEventListener(MouseEvent.MOUSE_MOVE, moveHandler)
+			ResizeModel.getInstance().stage.removeEventListener(MouseEvent.MOUSE_MOVE, moveHandler);
 			_isDragging = false;
 
 			stopDragging();

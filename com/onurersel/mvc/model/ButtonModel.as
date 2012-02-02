@@ -5,7 +5,7 @@
 
 package com.onurersel.mvc.model
 {
-	import com.greensock.TweenMax;
+	import com.greensock.TweenLite;
 
 	import flash.events.EventDispatcher;
 
@@ -37,8 +37,8 @@ package com.onurersel.mvc.model
 
 			if(disableDuration > 0)
 			{
-				TweenMax.killDelayedCallsTo(enableButtons);
-				TweenMax.delayedCall(disableDuration, enableButtons);
+				TweenLite.killDelayedCallsTo(enableButtons);
+				TweenLite.delayedCall(disableDuration, enableButtons);
 			}
 
 		}
@@ -48,7 +48,7 @@ package com.onurersel.mvc.model
 			if(!_isButtonsDisabled)			return;
 			_isButtonsDisabled = false;
 
-			TweenMax.killDelayedCallsTo(enableButtons);
+			TweenLite.killDelayedCallsTo(enableButtons);
 		}
 
 

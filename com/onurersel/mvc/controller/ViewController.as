@@ -159,7 +159,7 @@ package com.onurersel.mvc.controller
 
 			for (var i : int = 0; i < _viewArray.length; i++)
 			{
-				var targetView : View = _viewArray[i];
+				var targetView : IView = _viewArray[i];
 				if(targetView is IButtonView)		IButtonView(targetView).deactivate();
 			}
 
@@ -206,7 +206,7 @@ package com.onurersel.mvc.controller
 		{
 			for (var i : int = 0; i < _viewArray.length; i++)
 			{
-				var v : View = _viewArray[i];
+				var v : IView = _viewArray[i];
 				if(v == view)
 				{
 					trace("ViewController:addView : View was added before");
@@ -221,7 +221,7 @@ package com.onurersel.mvc.controller
 		{
 			for (var i : int = 0; i < _viewArray.length; i++)
 			{
-				var targetView : View = _viewArray[i];
+				var targetView : IView = _viewArray[i];
 				if(targetView == view)
 				{
 					_viewArray.splice(i,  1);

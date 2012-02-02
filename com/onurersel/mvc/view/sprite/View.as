@@ -30,6 +30,8 @@ package com.onurersel.mvc.view.sprite
 		{
 			_frame = new Rectangle(0, 0, this.height, this.width);
 			margin = new Point();
+
+			_isShown = true;
 		}
 
 

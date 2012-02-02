@@ -6,11 +6,15 @@ package com.onurersel.mvc.view.sprite
 {
 	import com.onurersel.mvc.model.ResizeModel;
 
+	import flash.events.Event;
+
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 
 	public class DragView extends ButtonView
 	{
+		static public const			DRAG		: String = "DRAG";
+
 		private var _isDragging		: Boolean;
 		private var grabPoint		: Point;
 
@@ -32,14 +36,16 @@ package com.onurersel.mvc.view.sprite
 			startDragging();
 		}
 
-		override protected function upHandler(event : MouseEvent) : void
+		override protected function upHandler(event : MouseEvent) : Boolean
 		{
-			super.upHandler(event);
+			if(!super.upHandler(event))		return false;
 
 			ResizeModel.getInstance().stage.removeEventListener(MouseEvent.MOUSE_MOVE, moveHandler)
 			_isDragging = false;
 
 			stopDragging();
+
+			return true;
 		}
 
 		private function moveHandler(event : MouseEvent) : void
@@ -77,7 +83,7 @@ package com.onurersel.mvc.view.sprite
 
 		public function drag() : void
 		{
-			
+			this.dispatchEvent(new Event(DRAG));
 		}
 
 

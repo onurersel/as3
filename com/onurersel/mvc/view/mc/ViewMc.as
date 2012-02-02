@@ -27,6 +27,8 @@ package com.onurersel.mvc.view.mc
 			_frame = new Rectangle(0, 0, this.height, this.width);
 			margin = new Point();
 
+			_isShown = false;
+
 			show();
 			addListeners();
 		}
